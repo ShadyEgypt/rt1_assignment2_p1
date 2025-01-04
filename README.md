@@ -80,11 +80,11 @@ This launch file launches the assignment_2_2024 package which is a dependency fo
 ### Launch Command
 Run the launch file with:
 ```bash
-roslaunch rt1_rt1_assignment2_p1 rt1_assignment2_p1.launch
+roslaunch rt1_assignment2_p1 rt1_assignment2_p1.launch
 ```
 If this command didn't work as expected, then you need to run:
 ```bash
-cd src/rt1_rt1_assignment2_p1/launch
+cd src/rt1_assignment2_p1/launch
 roslaunch rt1_assignment2_p1.launch
 ```
 ## Common Errors & Solutions
