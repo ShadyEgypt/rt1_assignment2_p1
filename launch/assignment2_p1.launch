@@ -1,0 +1,11 @@
+<launch>
+    <include file="$(find assignment_2_2024)/launch/assignment1.launch" />
+
+    <!-- Action Client Node -->
+    <node pkg="rt1_assignment2_p1" type="action_client_node.py" name="action_client" output="screen" />
+
+    <!-- Last Target Service Node -->
+    <node pkg="rt1_assignment2_p1" type="last_target_service.py" name="last_target_service"
+        output="screen" />
+
+</launch>
