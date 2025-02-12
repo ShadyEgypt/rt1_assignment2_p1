@@ -20,6 +20,7 @@ add_message_files(
 add_service_files(
   FILES
   GetLastTarget.srv
+  GetDistanceFromTarget.srv
 )
 
 generate_messages(
@@ -40,5 +41,6 @@ install(DIRECTORY launch/
 catkin_install_python(PROGRAMS
   scripts/action_client_node.py
   scripts/last_target_service.py
+  scripts/get_distance_service.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

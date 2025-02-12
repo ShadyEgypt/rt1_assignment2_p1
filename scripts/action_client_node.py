@@ -2,20 +2,19 @@
 
 import rospy
 import actionlib
-from assignment_2_2024.msg import PlanningAction, PlanningGoal
+from assignment_2_2024.msg import PlanningAction, PlanningGoal, PlanningFeedback
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Bool
 from rt1_assignment2_p1.msg import RobotStatus
 from geometry_msgs.msg import Twist
-from rt1_assignment2_p1.srv import GetLastTarget, GetLastTargetResponse
+from rt1_assignment2_p1.srv import GetDistanceFromTarget, GetDistanceFromTargetRequest, GetLastTarget, GetLastTargetResponse
 
 current_feedback = {'x': 0.0, 'y': 0.0, 'status': ""}
 
 def odom_callback(msg):
     global status_pub
-    # retrieve the current position and velocity from msg
     position = msg.pose.pose.position
     velocity = msg.twist.twist
-    # publish the updated values to the custom msg
     status_msg = RobotStatus()
     status_msg.x = position.x
     status_msg.y = position.y
@@ -23,6 +22,10 @@ def odom_callback(msg):
     status_msg.vel_z = velocity.angular.z
     
     status_pub.publish(status_msg)
+
+def feedback_topic_callback(feedback):
+    if feedback.status == "reached":
+        rospy.loginfo("reached")
 
 def send_goal(x, y):
     global client
@@ -53,7 +56,6 @@ def get_last_target():
     rospy.wait_for_service('/get_last_target')
     try:
         get_last_target_service = rospy.ServiceProxy('/get_last_target', GetLastTarget)
-        # No need to pass x and y since we are getting the last target
         response = get_last_target_service(False, 0, 0)
         rospy.loginfo(f"Last target was: x={response.res_x}, y={response.res_y}")
     except rospy.ServiceException as e:
@@ -69,6 +71,17 @@ def set_last_target(x, y):
     except rospy.ServiceException as e:
         rospy.logerr(f"Service call failed: {e}")
 
+def get_distance():
+    rospy.wait_for_service('/get_distance_from_target')
+    try:
+        get_distance_from_target_service = rospy.ServiceProxy('/get_distance_from_target', GetDistanceFromTarget)
+        response = get_distance_from_target_service()
+        rospy.loginfo(f"Distance from the target: {response.distance} meters")
+        if response.distance < 1:
+            obstacle_warning_pub.publish(True)
+    except rospy.ServiceException as e:
+        rospy.logerr(f"Service call failed: {e}")
+
 if __name__ == '__main__':
     rospy.init_node('action_client_node')
     
@@ -76,7 +89,9 @@ if __name__ == '__main__':
     client.wait_for_server()
     
     rospy.Subscriber('/odom', Odometry, odom_callback)
+    rospy.Subscriber('/reaching_goal/feedback', PlanningFeedback, feedback_topic_callback)
     status_pub = rospy.Publisher('/robot_status', RobotStatus, queue_size=10)
+    obstacle_warning_pub = rospy.Publisher('warning', Bool, queue_size=10)
     
     try:
         while not rospy.is_shutdown():
@@ -87,6 +102,7 @@ if __name__ == '__main__':
                 "  'status' - Check the status of the current action\n"
                 "  'feedback' - Check current feedback\n"
                 "  'last' - Retrieve the last target coordinates\n"
+                "  'distance' - Get the distance from the current position to the last target\n"
                 "  'exit' - Quit the program\n"
                 "Your choice: "
             ).strip().lower()
@@ -113,8 +129,9 @@ if __name__ == '__main__':
                 else:
                     rospy.loginfo("The action is not active")
             elif command == 'last':
-                rospy.loginfo("Checking last target...")
                 get_last_target()
+            elif command == 'distance':
+                get_distance()
             elif command == 'exit':
                 break
     except rospy.ROSInterruptException:
