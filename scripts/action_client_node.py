@@ -2,14 +2,43 @@
 
 import rospy
 import actionlib
-from assignment_2_2024.msg import PlanningAction, PlanningGoal
 from nav_msgs.msg import Odometry
-from rt1_assignment2_p1.msg import RobotStatus
 from geometry_msgs.msg import Twist
+from sensor_msgs.msg import LaserScan
+from std_msgs.msg import Float32
+from geometry_msgs.msg import Twist
+from std_srvs.srv import *
 from rt1_assignment2_p1.srv import GetLastTarget, GetLastTargetResponse
+from rt1_assignment2_p1.msg import RobotStatus
+from assignment_2_2024.msg import PlanningAction, PlanningGoal
+import math
 
 current_feedback = {'x': 0.0, 'y': 0.0, 'status': ""}
+active_ = False
+pub_ = None
+pub_closest_ = None
+regions_ = {
+    'right': 0,
+    'fright': 0,
+    'front': 0,
+    'fleft': 0,
+    'left': 0,
+}
 
+def clbk_laser(msg):
+    global regions_
+    regions_ = {
+        'right':  min(min(msg.ranges[0:143]), 10),
+        'fright': min(min(msg.ranges[144:287]), 10),
+        'front':  min(min(msg.ranges[288:431]), 10),
+        'fleft':  min(min(msg.ranges[432:575]), 10),
+        'left':   min(min(msg.ranges[576:713]), 10),
+    }
+
+    # Calculate and publish the closest distance
+    closest_distance = min(regions_.values())
+    pub_closest_.publish(Float32(closest_distance))
+    
 def odom_callback(msg):
     global status_pub
     # retrieve the current position and velocity from msg
@@ -76,6 +105,7 @@ if __name__ == '__main__':
     client.wait_for_server()
     
     rospy.Subscriber('/odom', Odometry, odom_callback)
+    rospy.Subscriber('/scan', LaserScan, clbk_laser)
     status_pub = rospy.Publisher('/robot_status', RobotStatus, queue_size=10)
     
     try:

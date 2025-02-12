@@ -36,5 +36,6 @@ catkin_package(
 catkin_install_python(PROGRAMS
   scripts/action_client_node.py
   scripts/last_target_service.py
+  scripts/laser_reader.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
