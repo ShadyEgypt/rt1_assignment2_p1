@@ -4,6 +4,7 @@ import rospy
 import actionlib
 from assignment_2_2024.msg import PlanningAction, PlanningGoal, PlanningFeedback
 from nav_msgs.msg import Odometry
+from sensor_msgs.msg import LaserScan
 from std_msgs.msg import Bool
 from rt1_assignment2_p1.msg import RobotStatus
 from geometry_msgs.msg import Twist
@@ -77,10 +78,15 @@ def get_distance():
         get_distance_from_target_service = rospy.ServiceProxy('/get_distance_from_target', GetDistanceFromTarget)
         response = get_distance_from_target_service()
         rospy.loginfo(f"Distance from the target: {response.distance} meters")
-        if response.distance < 1:
-            obstacle_warning_pub.publish(True)
     except rospy.ServiceException as e:
         rospy.logerr(f"Service call failed: {e}")
+
+def laserscan_callback(msg):
+    min_distance = min(msg.ranges)
+    if min_distance < 1.0:
+        obstacle_warning_pub.publish(True)
+    else:
+        obstacle_warning_pub.publish(False)
 
 if __name__ == '__main__':
     rospy.init_node('action_client_node')
@@ -90,6 +96,7 @@ if __name__ == '__main__':
     
     rospy.Subscriber('/odom', Odometry, odom_callback)
     rospy.Subscriber('/reaching_goal/feedback', PlanningFeedback, feedback_topic_callback)
+    rospy.Subscriber('/scan', LaserScan, laserscan_callback)
     status_pub = rospy.Publisher('/robot_status', RobotStatus, queue_size=10)
     obstacle_warning_pub = rospy.Publisher('warning', Bool, queue_size=10)
     
