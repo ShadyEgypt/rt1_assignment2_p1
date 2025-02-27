@@ -1,5 +1,31 @@
 #!/usr/bin/env python3
 
+##
+# \file action_client_node.py
+# \brief A ROS action client node for sending navigation goals and monitoring robot status.
+#
+# This node interfaces with the `/reaching_goal` action server to send goals,
+# cancel them, retrieve feedback, and track the robot's movement using `/odom` messages.
+# It also interacts with a custom service `/get_last_target` to store and retrieve the last target location.
+#
+# \details
+#
+# **Subscribes to:** <BR>
+# `/odom` (Odometry messages)
+#
+# **Publishes to:** <BR>
+# `/robot_status` (Custom RobotStatus messages)
+#
+# **Action Server:** <BR>
+# `/reaching_goal` (PlanningAction)
+#
+# **Service Client:** <BR>
+# `/get_last_target` (GetLastTarget)
+#
+# \author Shady
+# \date 2025
+#
+
 import rospy
 import actionlib
 from assignment_2_2024.msg import PlanningAction, PlanningGoal
@@ -8,14 +34,21 @@ from rt1_assignment2_p1.msg import RobotStatus
 from geometry_msgs.msg import Twist
 from rt1_assignment2_p1.srv import GetLastTarget, GetLastTargetResponse
 
+## @var current_feedback
+#  Dictionary to store the latest feedback from the action server.
 current_feedback = {'x': 0.0, 'y': 0.0, 'status': ""}
 
-def odom_callback(msg):
+def odom_callback(msg: Odometry) -> None:
+    """!
+    Callback function for the `/odom` topic. Extracts robot position and velocity
+    and publishes it to the `/robot_status` topic.
+
+    \param msg: Odometry message containing the robot's position and velocity.
+    """
     global status_pub
-    # retrieve the current position and velocity from msg
     position = msg.pose.pose.position
     velocity = msg.twist.twist
-    # publish the updated values to the custom msg
+
     status_msg = RobotStatus()
     status_msg.x = position.x
     status_msg.y = position.y
@@ -24,7 +57,13 @@ def odom_callback(msg):
     
     status_pub.publish(status_msg)
 
-def send_goal(x, y):
+def send_goal(x: float, y: float) -> None:
+    """!
+    Sends a goal to the `/reaching_goal` action server.
+
+    \param x: Target x-coordinate
+    \param y: Target y-coordinate
+    """
     global client
     goal = PlanningGoal()
     goal.target_pose.pose.position.x = x
@@ -33,37 +72,59 @@ def send_goal(x, y):
     set_last_target(x, y)
     rospy.loginfo(f"Sent goal: x={x}, y={y}")
 
-def goal_done_callback(status, result):
+def goal_done_callback(status: int, result) -> None:
+    """!
+    Callback function triggered when the action goal completes.
+
+    \param status: Status of the goal execution
+    \param result: Result returned by the action server
+    """
     if status == actionlib.GoalStatus.SUCCEEDED:
         rospy.loginfo("Goal achieved successfully!")
     else:
         rospy.loginfo("Goal did not complete successfully.")
 
-def goal_feedback_callback(feedback):
+def goal_feedback_callback(feedback) -> None:
+    """!
+    Callback function for action feedback, updates the current robot position.
+
+    \param feedback: Feedback message from the action server
+    """
     current_feedback['x'] = feedback.actual_pose.position.x
     current_feedback['y'] = feedback.actual_pose.position.y
     current_feedback['status'] = feedback.stat
 
-def cancel_goal():
+def cancel_goal() -> None:
+    """
+    Cancels the currently active goal.
+    """
     global client
     client.cancel_goal()
     rospy.loginfo("Goal canceled!")
 
-def get_last_target():
+def get_last_target() -> None:
+    """!
+    Calls the `/get_last_target` service to retrieve the last stored target coordinates.
+    """
     rospy.wait_for_service('/get_last_target')
     try:
         get_last_target_service = rospy.ServiceProxy('/get_last_target', GetLastTarget)
-        # No need to pass x and y since we are getting the last target
         response = get_last_target_service(False, 0, 0)
         rospy.loginfo(f"Last target was: x={response.res_x}, y={response.res_y}")
     except rospy.ServiceException as e:
-        rospy.logerr("Service call failed: %s" % e)
+        rospy.logerr(f"Service call failed: {e}")
 
-def set_last_target(x, y):
+def set_last_target(x: float, y: float) -> None:
+    """!
+    Calls the `/get_last_target` service to store the last target coordinates.
+
+    \param x: x-coordinate of the last target
+    \param y: y-coordinate of the last target
+    """
     rospy.wait_for_service('/get_last_target')
     try:
         set_last_target_service = rospy.ServiceProxy('/get_last_target', GetLastTarget)
-        response = set_last_target_service(True, x, y)  # Set the last target
+        response = set_last_target_service(True, x, y)
         if response.success:
             rospy.loginfo("Last target successfully updated.")
     except rospy.ServiceException as e:
@@ -79,6 +140,7 @@ if __name__ == '__main__':
     status_pub = rospy.Publisher('/robot_status', RobotStatus, queue_size=10)
     
     try:
+        ## @cond IGNORE
         while not rospy.is_shutdown():
             command = input(
                 "Enter a command:\n"
@@ -90,6 +152,7 @@ if __name__ == '__main__':
                 "  'exit' - Quit the program\n"
                 "Your choice: "
             ).strip().lower()
+        ## @endcond
 
             if command == 'set':
                 if client.get_state() == actionlib.GoalStatus.ACTIVE:
@@ -102,18 +165,15 @@ if __name__ == '__main__':
                 cancel_goal()
             elif command == 'status':
                 if client.get_state() == actionlib.GoalStatus.ACTIVE:
-                    rospy.loginfo("Checking action status...")
                     rospy.loginfo(f"Current Status: {current_feedback['status']}.")
                 else:
                     rospy.loginfo("The action is not active")
             elif command == 'feedback':
                 if client.get_state() == actionlib.GoalStatus.ACTIVE:
-                    rospy.loginfo("Checking action feedback...")
                     rospy.loginfo(f"Current position: x={current_feedback['x']}, y={current_feedback['y']}")
                 else:
                     rospy.loginfo("The action is not active")
             elif command == 'last':
-                rospy.loginfo("Checking last target...")
                 get_last_target()
             elif command == 'exit':
                 break

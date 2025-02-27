@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespacelast__target__service" kind="namespace" language="Python">
+    <compoundname>last_target_service</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="last__target__service_8py_1ab10672f259fbb8505b4dc59963a093f9" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>last_target_service::last_target</definition>
+        <argsstring></argsstring>
+        <name>last_target</name>
+        <initializer>=  {&apos;x&apos;: 0.0, &apos;y&apos;: 0.0}</initializer>
+        <briefdescription>
+<para>Dictionary to store the last target coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/last_target_service.py" line="24" column="1" bodyfile="scripts/last_target_service.py" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="last__target__service_8py_1a26d52998e99a28b51f9f2a7a4b0cc915" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>last_target_service::service</definition>
+        <argsstring></argsstring>
+        <name>service</name>
+        <initializer>=  rospy.Service(&apos;/get_last_target&apos;, GetLastTarget, handle_last_target)</initializer>
+        <briefdescription>
+<para>Service server for handling last target storage and retrieval. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/last_target_service.py" line="52" column="1" bodyfile="scripts/last_target_service.py" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="last__target__service_8py_1a1ac9e24ef8916470d81af95067dbf3bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>def</type>
+        <definition>def last_target_service.handle_last_target</definition>
+        <argsstring>(req)</argsstring>
+        <name>handle_last_target</name>
+        <param>
+          <type>req</type>
+          <defname>req</defname>
+        </param>
+        <briefdescription>
+<para>Callback function for the <computeroutput>/get_last_target</computeroutput> service. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If <computeroutput>set_target</computeroutput> is True, updates the last target coordinates. Otherwise, returns the last stored coordinates.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>req</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Service request containing <computeroutput>set_target</computeroutput>, <computeroutput>x</computeroutput>, and <computeroutput>y</computeroutput> Returns: GetLastTargetResponse with stored or updated coordinates </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/last_target_service.py" line="26" column="1" bodyfile="scripts/last_target_service.py" bodystart="26" bodyend="46"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="scripts/last_target_service.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

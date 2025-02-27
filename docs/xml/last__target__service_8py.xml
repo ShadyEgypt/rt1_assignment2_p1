@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="last__target__service_8py" kind="file" language="Python">
+    <compoundname>last_target_service.py</compoundname>
+    <innernamespace refid="namespacelast__target__service">last_target_service</innernamespace>
+    <briefdescription>
+<para>A ROS service node for storing and retrieving the last target coordinates. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This node provides a ROS service <computeroutput>/get_last_target</computeroutput>, which allows other nodes to either set a new last target or retrieve the previously stored target coordinates.</para>
+<para>Service Server: <linebreak/>
+ <computeroutput>/get_last_target</computeroutput> (GetLastTarget)</para>
+<para><simplesect kind="author"><para>Shady </para>
+</simplesect>
+<simplesect kind="date"><para>2025 </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">#!/usr/bin/env<sp/>python3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>rospy</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>rt1_assignment2_p1.srv<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>GetLastTarget,<sp/>GetLastTargetResponse</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">last_target<sp/>=<sp/>{</highlight><highlight class="stringliteral">&apos;x&apos;</highlight><highlight class="normal">:<sp/>0.0,<sp/></highlight><highlight class="stringliteral">&apos;y&apos;</highlight><highlight class="normal">:<sp/>0.0}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">def<sp/></highlight><highlight class="normal">handle_last_target(req):</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;&quot;!</highlight></codeline>
+<codeline lineno="28"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>Callback<sp/>function<sp/>for<sp/>the<sp/>`/get_last_target`<sp/>service.</highlight></codeline>
+<codeline lineno="29"><highlight class="stringliteral"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>If<sp/>`set_target`<sp/>is<sp/>True,<sp/>updates<sp/>the<sp/>last<sp/>target<sp/>coordinates.</highlight></codeline>
+<codeline lineno="31"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>Otherwise,<sp/>returns<sp/>the<sp/>last<sp/>stored<sp/>coordinates.</highlight></codeline>
+<codeline lineno="32"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="33"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>\param<sp/>req:<sp/>Service<sp/>request<sp/>containing<sp/>`set_target`,<sp/>`x`,<sp/>and<sp/>`y`</highlight></codeline>
+<codeline lineno="34"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>Returns:</highlight></codeline>
+<codeline lineno="35"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>GetLastTargetResponse<sp/>with<sp/>stored<sp/>or<sp/>updated<sp/>coordinates</highlight></codeline>
+<codeline lineno="36"><highlight class="stringliteral"><sp/><sp/><sp/><sp/>&quot;&quot;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">global</highlight><highlight class="normal"><sp/>last_target</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>req.set_target:</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_target[</highlight><highlight class="stringliteral">&apos;x&apos;</highlight><highlight class="normal">]<sp/>=<sp/>req.x</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_target[</highlight><highlight class="stringliteral">&apos;y&apos;</highlight><highlight class="normal">]<sp/>=<sp/>req.y</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rospy.loginfo(f</highlight><highlight class="stringliteral">&quot;Set<sp/>last<sp/>target<sp/>to<sp/>x={req.x},<sp/>y={req.y}&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>GetLastTargetResponse(res_x=req.x,<sp/>res_y=req.y,<sp/>success=</highlight><highlight class="keyword">True</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rospy.loginfo(</highlight><highlight class="stringliteral">&quot;Returning<sp/>last<sp/>target<sp/>coordinates.&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>GetLastTargetResponse(res_x=last_target[</highlight><highlight class="stringliteral">&apos;x&apos;</highlight><highlight class="normal">],<sp/>res_y=last_target[</highlight><highlight class="stringliteral">&apos;y&apos;</highlight><highlight class="normal">],<sp/>success=</highlight><highlight class="keyword">True</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>__name__<sp/>==<sp/></highlight><highlight class="stringliteral">&apos;__main__&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>rospy.init_node(</highlight><highlight class="stringliteral">&apos;last_target_service&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>service<sp/>=<sp/>rospy.Service(</highlight><highlight class="stringliteral">&apos;/get_last_target&apos;</highlight><highlight class="normal">,<sp/>GetLastTarget,<sp/>handle_last_target)</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>rospy.loginfo(</highlight><highlight class="stringliteral">&quot;Service<sp/>/get_last_target<sp/>is<sp/>ready.&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>rospy.spin()</highlight></codeline>
+    </programlisting>
+    <location file="scripts/last_target_service.py"/>
+  </compounddef>
+</doxygen>

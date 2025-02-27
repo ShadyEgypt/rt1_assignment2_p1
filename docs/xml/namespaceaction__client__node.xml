@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceaction__client__node" kind="namespace" language="Python">
+    <compoundname>action_client_node</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="action__client__node_8py_1a6fec8d00024037e9466d2c317a2f228d" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>action_client_node::current_feedback</definition>
+        <argsstring></argsstring>
+        <name>current_feedback</name>
+        <initializer>=  {&apos;x&apos;: 0.0, &apos;y&apos;: 0.0, &apos;status&apos;: &quot;&quot;}</initializer>
+        <briefdescription>
+<para>Dictionary to store the latest feedback from the action server. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="39" column="1" bodyfile="scripts/action_client_node.py" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="action__client__node_8py_1a988468181f8e431301bd590cdd1b46c3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>action_client_node.client</definition>
+        <argsstring></argsstring>
+        <name>client</name>
+        <initializer>=  actionlib.SimpleActionClient(&apos;/reaching_goal&apos;, PlanningAction)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="136" column="1" bodyfile="scripts/action_client_node.py" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="action__client__node_8py_1ae7ba913e4fb5981308a662a1678bb8fc" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>action_client_node.status_pub</definition>
+        <argsstring></argsstring>
+        <name>status_pub</name>
+        <initializer>=  rospy.Publisher(&apos;/robot_status&apos;, RobotStatus, queue_size=10)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="140" column="1" bodyfile="scripts/action_client_node.py" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="action__client__node_8py_1adaa98a2da2a44538a629a4002f842f6a" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>action_client_node.x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <initializer>=  float(input(&quot;Enter target x: &quot;))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="161" column="1" bodyfile="scripts/action_client_node.py" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="action__client__node_8py_1a55ad5605b2d165abe3b059e7f558322e" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>action_client_node.y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <initializer>=  float(input(&quot;Enter target y: &quot;))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="162" column="1" bodyfile="scripts/action_client_node.py" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="action__client__node_8py_1a93f297b7d8be6ce57388f87ddcbec20f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None action_client_node.odom_callback</definition>
+        <argsstring>(Odometry msg)</argsstring>
+        <name>odom_callback</name>
+        <param>
+          <type>Odometry</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+<para>Callback function for the <computeroutput>/odom</computeroutput> topic. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Extracts robot position and velocity and publishes it to the <computeroutput>/robot_status</computeroutput> topic.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Odometry message containing the robot&apos;s position and velocity. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="41" column="1" bodyfile="scripts/action_client_node.py" bodystart="41" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="action__client__node_8py_1aa07952987044bff566534a67f889fc9d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None action_client_node.send_goal</definition>
+        <argsstring>(float x, float y)</argsstring>
+        <name>send_goal</name>
+        <param>
+          <type>float</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+<para>Sends a goal to the <computeroutput>/reaching_goal</computeroutput> action server. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target x-coordinate </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target y-coordinate </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="60" column="1" bodyfile="scripts/action_client_node.py" bodystart="60" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="action__client__node_8py_1acd95fd0210b87fa044443d62a5ea77ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None action_client_node.goal_done_callback</definition>
+        <argsstring>(int status, result)</argsstring>
+        <name>goal_done_callback</name>
+        <param>
+          <type>int</type>
+          <declname>status</declname>
+        </param>
+        <param>
+          <type>result</type>
+          <defname>result</defname>
+        </param>
+        <briefdescription>
+<para>Callback function triggered when the action goal completes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>status</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Status of the goal execution </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Result returned by the action server </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="75" column="1" bodyfile="scripts/action_client_node.py" bodystart="75" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="action__client__node_8py_1a3c09cc115575c365c9f14b3aac5ab99b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None action_client_node.goal_feedback_callback</definition>
+        <argsstring>(feedback)</argsstring>
+        <name>goal_feedback_callback</name>
+        <param>
+          <type>feedback</type>
+          <defname>feedback</defname>
+        </param>
+        <briefdescription>
+<para>Callback function for action feedback, updates the current robot position. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>feedback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Feedback message from the action server </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="87" column="1" bodyfile="scripts/action_client_node.py" bodystart="87" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="action__client__node_8py_1a9f81035c8a856a8e09eeb065d7016935" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None action_client_node.cancel_goal</definition>
+        <argsstring>()</argsstring>
+        <name>cancel_goal</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>Cancels the currently active goal.
+</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="97" column="1" bodyfile="scripts/action_client_node.py" bodystart="97" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="action__client__node_8py_1a55a457c144f65375abb1199a20bca751" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None action_client_node.get_last_target</definition>
+        <argsstring>()</argsstring>
+        <name>get_last_target</name>
+        <briefdescription>
+<para>Calls the <computeroutput>/get_last_target</computeroutput> service to retrieve the last stored target coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="105" column="1" bodyfile="scripts/action_client_node.py" bodystart="105" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="action__client__node_8py_1ae76fac9a8009bf05d1dac35e4eb1b8da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>None</type>
+        <definition> None action_client_node.set_last_target</definition>
+        <argsstring>(float x, float y)</argsstring>
+        <name>set_last_target</name>
+        <param>
+          <type>float</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+<para>Calls the <computeroutput>/get_last_target</computeroutput> service to store the last target coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x-coordinate of the last target </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y-coordinate of the last target </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scripts/action_client_node.py" line="117" column="1" bodyfile="scripts/action_client_node.py" bodystart="117" bodyend="132"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="scripts/action_client_node.py" line="1" column="1"/>
+  </compounddef>
+</doxygen>

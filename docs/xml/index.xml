@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.1" xml:lang="en-US">
+  <compound refid="namespaceaction__client__node" kind="namespace"><name>action_client_node</name>
+    <member refid="action__client__node_8py_1a6fec8d00024037e9466d2c317a2f228d" kind="variable"><name>current_feedback</name></member>
+    <member refid="action__client__node_8py_1a988468181f8e431301bd590cdd1b46c3" kind="variable"><name>client</name></member>
+    <member refid="action__client__node_8py_1ae7ba913e4fb5981308a662a1678bb8fc" kind="variable"><name>status_pub</name></member>
+    <member refid="action__client__node_8py_1adaa98a2da2a44538a629a4002f842f6a" kind="variable"><name>x</name></member>
+    <member refid="action__client__node_8py_1a55ad5605b2d165abe3b059e7f558322e" kind="variable"><name>y</name></member>
+    <member refid="action__client__node_8py_1a93f297b7d8be6ce57388f87ddcbec20f" kind="function"><name>odom_callback</name></member>
+    <member refid="action__client__node_8py_1aa07952987044bff566534a67f889fc9d" kind="function"><name>send_goal</name></member>
+    <member refid="action__client__node_8py_1acd95fd0210b87fa044443d62a5ea77ca" kind="function"><name>goal_done_callback</name></member>
+    <member refid="action__client__node_8py_1a3c09cc115575c365c9f14b3aac5ab99b" kind="function"><name>goal_feedback_callback</name></member>
+    <member refid="action__client__node_8py_1a9f81035c8a856a8e09eeb065d7016935" kind="function"><name>cancel_goal</name></member>
+    <member refid="action__client__node_8py_1a55a457c144f65375abb1199a20bca751" kind="function"><name>get_last_target</name></member>
+    <member refid="action__client__node_8py_1ae76fac9a8009bf05d1dac35e4eb1b8da" kind="function"><name>set_last_target</name></member>
+  </compound>
+  <compound refid="namespacelast__target__service" kind="namespace"><name>last_target_service</name>
+    <member refid="last__target__service_8py_1ab10672f259fbb8505b4dc59963a093f9" kind="variable"><name>last_target</name></member>
+    <member refid="last__target__service_8py_1a26d52998e99a28b51f9f2a7a4b0cc915" kind="variable"><name>service</name></member>
+    <member refid="last__target__service_8py_1a1ac9e24ef8916470d81af95067dbf3bb" kind="function"><name>handle_last_target</name></member>
+  </compound>
+  <compound refid="action__client__node_8py" kind="file"><name>action_client_node.py</name>
+  </compound>
+  <compound refid="last__target__service_8py" kind="file"><name>last_target_service.py</name>
+  </compound>
+  <compound refid="dir_53e6fa9553ac22a5646d2a2b2d7b97a1" kind="dir"><name>scripts</name>
+  </compound>
+</doxygenindex>
