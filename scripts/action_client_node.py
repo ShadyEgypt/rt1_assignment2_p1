@@ -71,13 +71,14 @@ def set_last_target(x, y):
 
 if __name__ == '__main__':
     rospy.init_node('action_client_node')
-    
+    rospy.loginfo("Node has started.")
+
     client = actionlib.SimpleActionClient('/reaching_goal', PlanningAction)
     client.wait_for_server()
     
     rospy.Subscriber('/odom', Odometry, odom_callback)
     status_pub = rospy.Publisher('/robot_status', RobotStatus, queue_size=10)
-    
+    rospy.loginfo("Node is before try catch block.")
     try:
         while not rospy.is_shutdown():
             command = input(

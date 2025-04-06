@@ -33,12 +33,12 @@ catkin_package(
   CATKIN_DEPENDS rospy std_msgs actionlib actionlib_msgs geometry_msgs nav_msgs sensor_msgs message_runtime
 )
 
-install(DIRECTORY launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-)
-
 catkin_install_python(PROGRAMS
   scripts/action_client_node.py
   scripts/last_target_service.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
