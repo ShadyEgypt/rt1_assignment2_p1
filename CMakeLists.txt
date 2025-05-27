@@ -20,6 +20,8 @@ add_message_files(
 add_service_files(
   FILES
   GetLastTarget.srv
+  SendGoal.srv
+  Empty.srv
 )
 
 generate_messages(
@@ -36,6 +38,9 @@ catkin_package(
 catkin_install_python(PROGRAMS
   scripts/action_client_node.py
   scripts/last_target_service.py
+  scripts/send_goal.py
+  scripts/reset_position.py
+  scripts/experiment_client_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
