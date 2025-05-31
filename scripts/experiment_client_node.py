@@ -1,22 +1,30 @@
 #!/usr/bin/env python3
 
 import rospy
-import time
 import csv
 from std_srvs.srv import Empty
 from rt1_assignment2_p1.srv import SendGoal
+import os
 
-# === Hardcoded Goal List ===
-goals = [
-    (1.0, 2.0), (2.0, 1.0), (3.0, 3.0), (0.0, 0.0), (4.0, 2.5),
-    (2.5, 4.0), (3.0, 1.5), (1.5, 3.5), (4.5, 1.0), (0.5, 0.5),
-    (3.5, 3.5), (2.0, 2.0), (1.0, 4.0), (4.0, 4.0), (0.0, 3.0),
-    (3.0, 0.0), (1.5, 1.5), (2.5, 2.5), (3.5, 0.5), (0.5, 3.5),
-    (4.0, 0.0), (0.0, 4.0), (1.0, 1.0), (2.0, 3.0), (3.0, 2.0),
-    (2.0, 0.0), (0.0, 2.0), (4.5, 4.5), (4.5, 0.5), (0.5, 4.5)
-]
+input_goal_file = "assignment2.csv"
 
-csv_path = "goal_times.csv"
+def read_goals_from_csv(file_path):
+    goals = []
+    if not os.path.isfile(file_path):
+        rospy.logerr(f"CSV file '{file_path}' not found.")
+        return []
+
+    with open(file_path, mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if len(row) >= 2:
+                try:
+                    x = float(row[0].strip())
+                    y = float(row[1].strip())
+                    goals.append((x, y))
+                except ValueError:
+                    rospy.logwarn(f"Skipping invalid row: {row}")
+    return goals
 
 def main():
     rospy.init_node('experiment_client_node')
@@ -26,38 +34,33 @@ def main():
     send_goal_srv = rospy.ServiceProxy('/send_goal', SendGoal)
     reset_srv = rospy.ServiceProxy('/reset_positions', Empty)
 
-    with open(csv_path, mode='w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['experiment', 'x', 'y', 'duration'])
+    goals = read_goals_from_csv(input_goal_file)
+    if not goals:
+        rospy.logerr("No valid goals loaded. Exiting.")
+        return
 
-        for i, (x, y) in enumerate(goals, start=1):
-            rospy.loginfo(f"Sending goal {i}: ({x}, {y})")
+    for i, (x, y) in enumerate(goals, start=1):
+        rospy.loginfo(f"Sending goal {i}: ({x}, {y})")
 
-            start = time.time()
+        try:
+            res = send_goal_srv(x, y)
+            if res.success:
+                rospy.loginfo(f"Goal {i} reached successfully.")
+            else:
+                rospy.logwarn(f"Goal {i} failed: {res.message}")
+        except rospy.ServiceException as e:
+            rospy.logerr(f"Service call failed for goal {i}: {e}")
+            continue
 
-            try:
-                res = send_goal_srv(x, y)
-                if res.success:
-                    duration = round(time.time() - start, 2)
-                    writer.writerow([i, x, y, duration])
-                    rospy.loginfo(f"Goal {i} reached in {duration} seconds")
-                else:
-                    writer.writerow([i, x, y, "FAILED"])
-                    rospy.logwarn(f"Goal {i} failed: {res.message}")
-            except rospy.ServiceException as e:
-                writer.writerow([i, x, y, "ERROR"])
-                rospy.logerr(f"Service call failed: {e}")
-                continue
+        try:
+            reset_srv()
+            rospy.loginfo("Robot reset to initial position.")
+        except rospy.ServiceException as e:
+            rospy.logerr(f"Reset failed: {e}")
 
-            try:
-                reset_srv()
-                rospy.loginfo("Robot reset to initial position.")
-            except rospy.ServiceException as e:
-                rospy.logerr(f"Reset failed: {e}")
+        rospy.sleep(1)
 
-            time.sleep(1)
-
-    rospy.loginfo("All experiments completed.")
+    rospy.loginfo("All goals sent.")
 
 if __name__ == '__main__':
     main()
