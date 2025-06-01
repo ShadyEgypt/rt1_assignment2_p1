@@ -6,7 +6,7 @@ from std_srvs.srv import Empty
 from rt1_assignment2_p1.srv import SendGoal
 import os
 
-input_goal_file = "assignment2.csv"
+input_goal_file = "/root/ros_ws/assignment2.csv"
 
 def read_goals_from_csv(file_path):
     goals = []
@@ -29,10 +29,8 @@ def read_goals_from_csv(file_path):
 def main():
     rospy.init_node('experiment_client_node')
     rospy.wait_for_service('/send_goal')
-    rospy.wait_for_service('/reset_positions')
 
     send_goal_srv = rospy.ServiceProxy('/send_goal', SendGoal)
-    reset_srv = rospy.ServiceProxy('/reset_positions', Empty)
 
     goals = read_goals_from_csv(input_goal_file)
     if not goals:
@@ -52,11 +50,6 @@ def main():
             rospy.logerr(f"Service call failed for goal {i}: {e}")
             continue
 
-        try:
-            reset_srv()
-            rospy.loginfo("Robot reset to initial position.")
-        except rospy.ServiceException as e:
-            rospy.logerr(f"Reset failed: {e}")
 
         rospy.sleep(1)
 
